@@ -1,0 +1,64 @@
+                              LEETCODE BIWEEKLY CONTEST 137
+
+
+*************************** Find the Power of K-Size Subarrays I  ****************************************************************************************
+
+# Python Code 
+
+def find_consecutive_max(nums, k):
+    n = len(nums)
+    result = [-1] * (n - k + 1)
+
+    for i in range(n - k + 1):
+        is_consecutive = True
+        max_value = nums[i]
+
+        for j in range(i, i + k - 1):
+            if nums[j] + 1 != nums[j + 1]:
+                is_consecutive = False
+                break
+            if nums[j + 1] > max_value:
+                max_value = nums[j + 1]
+
+        if is_consecutive:
+            result[i] = max_value
+        else:
+            result[i] = -1
+
+    return result
+
+*************************** Find the Power of K-Size Subarrays II  ****************************************************************************************
+
+# Python Code 
+
+class Solution:
+    def resultsArray(self, nums, k):
+        n = len(nums)
+        arr = [-1] * (n - k + 1)
+        k1 = 0  # index used to place the result in arr 
+        left = 0  # the starting index of current sliding window 
+        is_consecutive = True  
+
+        for right in range(n):   # sliding window loop 
+            if right > left:
+                if nums[right] != nums[right - 1] + 1:
+                    is_consecutive = False
+
+            if right - left + 1 == k:  # check if the window has grown to the desired size k
+                if is_consecutive:
+                    arr[k1] = nums[right] #store the last element in arr or we can say we are storing the max element 
+                    
+                else:
+                    arr[k1] = -1
+                k1 += 1
+# adjust the sliding window 
+                if left + 1 < n and nums[left] + 1 != nums[left + 1]:
+                    is_consecutive = True
+                    for i in range(left + 1, right):
+                        if nums[i] + 1 != nums[i + 1]:
+                            is_consecutive = False
+                            break
+
+                left += 1
+
+        return arr
